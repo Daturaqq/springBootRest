@@ -1,17 +1,20 @@
 package com.springBoot.service;
 
-import com.springBoot.model.Role;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import com.springBoot.model.User;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
+    User getUserByUsername(String username);
+
     List<User> getAllUsers();
-    User getUser(Long id);
-    void add(User user);
-    void edit(User editUser, long id);
-    void delete(Long id);
-    Role getRole(String roleName);
-    User getUserByUsername (String username);
-    void createAdmin();
+
+    void save(User user);
+
+    void saveOrUpdate(User user);
+
+    User getUserById(long id);
+
+    void delete(long id);
 }

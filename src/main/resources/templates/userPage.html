@@ -10,17 +10,21 @@
     <table>
         <tr>
             <th>Id</th>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>email</th>
-            <th>role</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Role</th>
         </tr>
 
         <tr>
             <td th:utext="${user.getId()}"></td>
-            <td th:utext="${user.getFirstname()}"></td>
-            <td th:utext="${user.getLastname()}"></td>
+            <td th:utext="${user.getName()}"></td>
+            <td th:utext="${user.getSurname()}"></td>
+            <td th:utext="${user.getAge()}"></td>
             <td th:utext="${user.getEmail()}"></td>
+            <td th:utext="${user.getPassword()}"></td>
             <td th:utext="${user.getStringRoles()}"></td>
         </tr>
     </table>

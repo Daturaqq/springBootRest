@@ -1,10 +1,11 @@
 package com.springBoot.controller;
 
-import com.springBoot.model.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.springBoot.model.User;
+import com.springBoot.service.RoleService;
 import com.springBoot.service.UserService;
 
 import java.util.List;
@@ -12,22 +13,26 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    private final UserService service;
 
-    public AdminController(UserService service) {
-        this.service = service;
+    private final UserService userService;
+    private final RoleService roleService;
+
+    public AdminController(UserService userService, RoleService roleService) {
+        this.userService = userService;
+        this.roleService = roleService;
     }
+
 
     @GetMapping
     public String mainPage(Model model) {
-        List<User> userList = service.getAllUsers();
+        List<User> userList = userService.getAllUsers();
         model.addAttribute("users", userList);
         return "mainPage";
     }
 
     @GetMapping("/userPage/{id}")
-    public String userPage(@PathVariable("id") Long id,Model model) {
-        model.addAttribute("user", service.getUser(id));
+    public String userPage(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));
         return "userPage";
     }
 
@@ -39,22 +44,22 @@ public class AdminController {
 
     @PostMapping("/save")
     public String saveUser(@ModelAttribute("user") User user) {
-        service.add(user);
+        userService.saveOrUpdate(user);
         return "redirect:/admin";
     }
 
     @GetMapping("/edit/{id}")
     public String editUser(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("editUser", service.getUser(id));
+        model.addAttribute("editUser", userService.getUserById(id));
         return "editUser";
     }
 
-    @PatchMapping("/saveEdit/{id}")
+    @PutMapping("/saveEdit/{id}")
     public String updateUser(@ModelAttribute("editUser") User editUser,
                              @PathVariable("id") Long id,
                              Authentication authentication) {
-        long authenticationUserId = service.getUserByUsername(authentication.getName()).getId();
-        service.edit(editUser, id);
+        long authenticationUserId = userService.getUserByUsername(authentication.getName()).getId();
+        userService.saveOrUpdate(editUser);
         if (id == authenticationUserId) {
             return "redirect:/login?logout";
         }
@@ -64,8 +69,8 @@ public class AdminController {
     @DeleteMapping("/delete/{id}")
     public String deleteUser(@PathVariable("id") Long id,
                              Authentication authentication) {
-        long authenticationUserId = service.getUserByUsername(authentication.getName()).getId();
-        service.delete(id);
+        long authenticationUserId = userService.getUserByUsername(authentication.getName()).getId();
+        userService.delete(id);
         if (id == authenticationUserId) {
             return "redirect:/login?logout";
         }

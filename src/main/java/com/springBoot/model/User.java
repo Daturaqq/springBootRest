@@ -1,58 +1,63 @@
 package com.springBoot.model;
 
-
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "User")
+@Table(name = "users")
 public class User implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String firstname;
-    private String lastname;
-    private String email; // используется в качестве username (логина)
+    private long id;
+
+    @Column(unique = true)
+    private String email;
     private String password;
+    private String name;
+    private String surname;
+    private int age;
 
-    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
-
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    private Set<Role> roles;
 
     public User() {
     }
 
-    public User(String firstname, String lastname, String email, String password, Set<Role> roles) {
-        this.firstname = firstname;
-        this.lastname = lastname;
+    public User(String email, String password, String name, String surname, int age, Set<Role> roles) {
         this.email = email;
         this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.age = age;
         this.roles = roles;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getStringRoles() {
+        StringBuilder stringRoles = new StringBuilder();
+        for (Role role : roles) {
+            stringRoles.append(role.toString()).append(" ");
+        }
+        return stringRoles.toString();
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
     }
 
-    public String getLastname() {
-        return lastname;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public String getEmail() {
@@ -63,35 +68,21 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public String getStringRoles() {
-        return roles.toString();
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override
-    public String toString() {
-        return "id:" + id + " name:" + firstname + " " + lastname + " email:" + email;
+    public String getUsername() {
+        return email;
     }
 
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+    public void setUsername(String email) {
+        this.email = email;
     }
 
     @Override
@@ -99,9 +90,32 @@ public class User implements UserDetails {
         return password;
     }
 
-    @Override
-    public String getUsername() {
-        return email;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     @Override
@@ -124,4 +138,3 @@ public class User implements UserDetails {
         return true;
     }
 }
-

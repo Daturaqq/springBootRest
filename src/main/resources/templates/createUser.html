@@ -6,24 +6,29 @@
     <title>New user</title>
 </head>
 <body>
-
-<form th:method="POST" th:action="@{/admin/save}" th:object="${user}">
-    <label for="firstname">Firstname: </label>
-    <input type="text" th:field="*{firstname}" id="firstname"/>
-    <br/>
-    <label for="lastname">Lastname: </label>
-    <input type="text" th:field="*{lastname}" id="lastname"/>
-    <br/>
-    <label for="email">Email: </label>
-    <input type="text" th:field="*{email}" id="email"/>
-    <br/>
-    <label for="password">password: </label>
-    <input type="text" th:field="*{password}" id="password"/>
-    <br/>
-    <label for="roles">roles: </label>
-    <input type="text" th:field="*{roles}" id="roles"/>
-    <br/>
-    <input type="submit" value="Save"/>
-</form>
+<div class="container">
+    <form th:method="POST" th:action="@{/admin/save}" th:object="${user}">
+        <label for="name">name: </label>
+        <input type="text" th:field="*{name}" id="name"/>
+        <br/>
+        <label for="surname">surname: </label>
+        <input type="text" th:field="*{surname}" id="surname"/>
+        <br/>
+        <label for="age">age: </label>
+        <input type="text" th:field="*{age}" id="age"/>
+        <br/>
+        <label for="email">email: </label>
+        <input type="text" th:field="*{email}" id="email"/>
+        <br/>
+        <label for="password">password: </label>
+        <input type="text" th:field="*{password}" id="password"/>
+        <br/>
+        <input type="checkbox" name="roles" value="ROLE_USER" id="ROLE_USER" th:text="USER"/>
+        <br/>
+        <input type="checkbox" name="roles" value="ROLE_ADMIN" id="ROLE_ADMIN" th:text="ADMIN"/>
+        <br/>
+        <input type="submit" value="Save"/>
+    </form>
+</div>
 </body>
 </html>

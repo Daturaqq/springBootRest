@@ -10,15 +10,17 @@
     <table>
         <tr>
             <th>Id</th>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>email</th>
-            <th>role</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Age</th>
+            <th>Email</th>
+            <th>Role</th>
         </tr>
         <tr th:each="user : ${users}">
             <td><a th:href="@{admin/userPage/{id} (id=${user.getId()})}" th:utext="${user.getId()}"></a></td>
-            <td th:utext="${user.getFirstname()}"></td>
-            <td th:utext="${user.getLastname()}"></td>
+            <td th:utext="${user.getName()}"></td>
+            <td th:utext="${user.getSurname()}"></td>
+            <td th:utext="${user.getAge()}"></td>
             <td th:utext="${user.getEmail()}"></td>
             <td th:utext="${user.getStringRoles()}"></td>
         </tr>
