@@ -1,10 +1,10 @@
 package com.springBoot.init;
 
-import org.springframework.stereotype.Component;
 import com.springBoot.model.Role;
 import com.springBoot.model.User;
 import com.springBoot.service.RoleService;
 import com.springBoot.service.UserService;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Set;

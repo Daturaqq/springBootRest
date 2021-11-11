@@ -1,7 +1,7 @@
 package com.springBoot.dao;
 
-import org.springframework.stereotype.Repository;
 import com.springBoot.model.Role;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,7 +28,8 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public List<Role> getAllRoles() {
-        return null;
+        return em.createQuery("SELECT r FROM Role r", Role.class)
+                .getResultList();
     }
 }
 

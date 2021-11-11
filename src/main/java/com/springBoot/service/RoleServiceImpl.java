@@ -1,10 +1,10 @@
 package com.springBoot.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.springBoot.dao.RoleDao;
 import com.springBoot.model.Role;
 import com.springBoot.model.User;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -36,14 +36,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public User addRoleForUser(User user) {
+    public User addRoleForUser(User user, String[] roles) {
         Set<Role> roleSet = new HashSet<>();
         Role adminRole = getRoleByName("ROLE_ADMIN");
         Role userRole = getRoleByName("ROLE_USER");
-        for (Role role : user.getRoles()) {
-            if (role.getName().equals(adminRole.getName())) {
+        for (String role : roles) {
+            if (role.equals("ADMIN")) {
                 roleSet.add(adminRole);
-            } else if (role.getName().equals(userRole.getName())) {
+            } else if (role.equals("USER")) {
                 roleSet.add(userRole);
             }
         }

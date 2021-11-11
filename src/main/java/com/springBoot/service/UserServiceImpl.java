@@ -1,12 +1,12 @@
 package com.springBoot.service;
 
+import com.springBoot.dao.UserDao;
+import com.springBoot.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.springBoot.dao.UserDao;
-import com.springBoot.model.User;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        DAO.save(roleService.addRoleForUser(user));
+        DAO.save(user);
     }
 
     @Override
@@ -45,7 +45,15 @@ public class UserServiceImpl implements UserService {
         if (!bCryptPasswordEncoder.matches(userDB.getPassword(), bCryptPasswordEncoder.encode(user.getPassword()))) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         }
-        DAO.saveOrUpdate(roleService.addRoleForUser(user));
+        DAO.saveOrUpdate(user);
+    }
+
+    @Override
+    public void saveOrUpdateWithRoles(User user, String[] roles) {
+        if (user.getId() == 0) {
+            save(roleService.addRoleForUser(user, roles));
+        }
+        saveOrUpdate(roleService.addRoleForUser(user, roles));
     }
 
     @Override

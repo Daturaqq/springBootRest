@@ -12,5 +12,5 @@ public interface RoleService {
 
     void saveRole(Role role);
 
-    User addRoleForUser(User user);
+    User addRoleForUser(User user, String[] roles);
 }
