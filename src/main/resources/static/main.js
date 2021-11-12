@@ -146,7 +146,7 @@ btnEditForm.addEventListener("click", async e => {
         .map(option => option.value);
 
     await fetch(url, {
-        method: "PATCH",
+        method: "PUT",
         headers: {
             'Content-Type': 'application/json'
         },

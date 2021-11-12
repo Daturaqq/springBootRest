@@ -5,6 +5,8 @@ import com.springBoot.model.User;
 import com.springBoot.service.RoleService;
 import com.springBoot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -24,36 +26,36 @@ public class RestUserController {
     }
 
     @GetMapping("/users")
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/roles")
-    public List<Role> getAllRoles() {
-        return roleService.getAllRoles();
+    public ResponseEntity<List<Role>> getAllRoles() {
+        return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
     }
 
     @GetMapping("/user")
-    public User getPrincipal(Principal principal) {
-        return userService.getUserByUsername(principal.getName());
+    public ResponseEntity<User> getPrincipal(Principal principal) {
+        return new ResponseEntity<>(userService.getUserByUsername(principal.getName()), HttpStatus.OK);
     }
 
     @PostMapping("/users")
-    public User saveUser(@RequestBody User user) {
-        userService.saveOrUpdate(user);
-        return user;
+    public ResponseEntity<User> saveUser(@RequestBody User user) {
+        userService.save(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PatchMapping("/users")
-    public User updateUser(@RequestBody User user) {
+    @PutMapping("/users")
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
         userService.saveOrUpdate(user);
-        return user;
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @DeleteMapping("/users/{id}")
-    public String deleteUser(@PathVariable long id) {
+    public ResponseEntity<Boolean> deleteUser(@PathVariable long id) {
         userService.delete(id);
-        return "User with Id: " + id + " was deleted";
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 }
 

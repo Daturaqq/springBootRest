@@ -38,14 +38,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public User addRoleForUser(User user, String[] roles) {
+    public User addRoleForUser(User user) {
         Set<Role> roleSet = new HashSet<>();
         Role adminRole = getRoleByName("ADMIN");
         Role userRole = getRoleByName("USER");
-        for (String role : roles) {
-            if (role.equals("ADMIN")) {
+        for (Role role : user.getRoles()) {
+            if (role.toString().equals("ADMIN")) {
                 roleSet.add(adminRole);
-            } else if (role.equals("USER")) {
+            } else if (role.toString().equals("USER")) {
                 roleSet.add(userRole);
             }
         }

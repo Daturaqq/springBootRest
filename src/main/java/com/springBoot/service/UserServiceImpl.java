@@ -37,24 +37,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        DAO.save(user);
+        DAO.save(roleService.addRoleForUser(user));
     }
 
     @Override
     public void saveOrUpdate(User user) {
         User userDB = getUserById(user.getId());
-        if (!bCryptPasswordEncoder.matches(userDB.getPassword(), bCryptPasswordEncoder.encode(user.getPassword()))) {
+        if (user.getPassword().isEmpty()) {
+            user.setPassword(userDB.getPassword());
+        } else if (!bCryptPasswordEncoder.matches(userDB.getPassword(), bCryptPasswordEncoder.encode(user.getPassword()))) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         }
-        DAO.saveOrUpdate(user);
-    }
-
-    @Override
-    public void saveOrUpdateWithRoles(User user, String[] roles) {
-        if (user.getId() == 0) {
-            save(roleService.addRoleForUser(user, roles));
-        }
-        saveOrUpdate(roleService.addRoleForUser(user, roles));
+        DAO.saveOrUpdate(roleService.addRoleForUser(user));
     }
 
     @Override
