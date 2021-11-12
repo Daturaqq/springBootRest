@@ -3,6 +3,7 @@ package com.springBoot.service;
 import com.springBoot.dao.RoleDao;
 import com.springBoot.model.Role;
 import com.springBoot.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ public class RoleServiceImpl implements RoleService {
 
     private final RoleDao DAO;
 
+    @Autowired
     public RoleServiceImpl(RoleDao DAO) {
         this.DAO = DAO;
     }
@@ -38,8 +40,8 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public User addRoleForUser(User user, String[] roles) {
         Set<Role> roleSet = new HashSet<>();
-        Role adminRole = getRoleByName("ROLE_ADMIN");
-        Role userRole = getRoleByName("ROLE_USER");
+        Role adminRole = getRoleByName("ADMIN");
+        Role userRole = getRoleByName("USER");
         for (String role : roles) {
             if (role.equals("ADMIN")) {
                 roleSet.add(adminRole);

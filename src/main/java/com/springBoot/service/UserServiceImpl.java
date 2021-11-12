@@ -18,6 +18,7 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final UserDao DAO;
 
+    @Autowired
     public UserServiceImpl(RoleService roleService, UserDao DAO) {
         this.roleService = roleService;
         this.DAO = DAO;

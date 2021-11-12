@@ -1,5 +1,6 @@
 package com.springBoot.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ public class Role implements GrantedAuthority {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private Set<User> users;
 
     public Role() {
@@ -54,11 +56,6 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        if (name.equals("ROLE_USER")) {
-            return "USER";
-        } else if (name.equals("ROLE_ADMIN")) {
-            return "ADMIN";
-        }
-        return null;
+        return name;
     }
 }

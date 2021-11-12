@@ -4,10 +4,10 @@ import com.springBoot.model.Role;
 import com.springBoot.model.User;
 import com.springBoot.service.RoleService;
 import com.springBoot.service.UserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -17,42 +17,43 @@ public class RestUserController {
     private final UserService userService;
     private final RoleService roleService;
 
+    @Autowired
     public RestUserController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
 
-    @GetMapping("/admin")
-    public ResponseEntity<List<User>> showAllUsers(){
-        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+    @GetMapping("/users")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
-    @GetMapping("/admin/roles")
-    public ResponseEntity<List<Role>> getAllRoles() {
-        return new ResponseEntity<>(roleService.getAllRoles(), HttpStatus.OK);
+    @GetMapping("/roles")
+    public List<Role> getAllRoles() {
+        return roleService.getAllRoles();
     }
 
-    @GetMapping("/admin/{id}")
-    public ResponseEntity<User> showUser(@PathVariable("id") Long id){
-        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+    @GetMapping("/user")
+    public User getPrincipal(Principal principal) {
+        return userService.getUserByUsername(principal.getName());
     }
 
-    @PostMapping("/admin")
-    public ResponseEntity<User> create(@RequestBody User user) {
+    @PostMapping("/users")
+    public User saveUser(@RequestBody User user) {
         userService.saveOrUpdate(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return user;
     }
 
-    @DeleteMapping("/admin/{id}")
-    public ResponseEntity<User> delete(@PathVariable Long id) {
+    @PatchMapping("/users")
+    public User updateUser(@RequestBody User user) {
+        userService.saveOrUpdate(user);
+        return user;
+    }
+
+    @DeleteMapping("/users/{id}")
+    public String deleteUser(@PathVariable long id) {
         userService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PutMapping("/admin")
-    public ResponseEntity<User> update(@RequestBody User user) {
-        userService.saveOrUpdate(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return "User with Id: " + id + " was deleted";
     }
 }
 
