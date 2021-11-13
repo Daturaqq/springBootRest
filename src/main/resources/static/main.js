@@ -1,22 +1,22 @@
-const url = "http://localhost:8080/api/users" // get, post, patch
-const urlPrincipal = "http://localhost:8080/api/user" // get principal
+const url = "http://localhost:8080/api/users"
+const urlPrincipal = "http://localhost:8080/api/user"
 
 
 const tableUsers = document.querySelector("#tab-users")
 const tablePrincipal = document.querySelector("#tab-principal")
 const emailPrincipal = document.querySelector("#emailPrincipal")
 const rolesPrincipal = document.querySelector("#rolesPrincipal")
-//Edit
+
 const editModalForm = document.querySelector("#editModal #updateForm")
 const btnEditForm = document.querySelector("#btnEditForm")
-//Delete
+
 const deleteModalForm = document.querySelector("#deleteModal #deleteForm")
 const btnDeleteForm = document.querySelector("#btnDeleteForm")
-//Add
+
 const addNewUserForm = document.querySelector("#addNewUser")
 const btnAddNewUser = document.querySelector("#btnAdd")
 
-//Create users table
+
 async function usersTable() {
     const response = await fetch(url)
     const data = await response.json()
@@ -65,7 +65,6 @@ async function usersTable() {
 
 usersTable()
 
-//Creat user info page
 async function userInfo() {
     const response = await fetch(urlPrincipal)
     const user = await response.json()
@@ -87,7 +86,6 @@ async function userInfo() {
 
 userInfo()
 
-//Post request
 btnAddNewUser.addEventListener("click", async e => {
     e.preventDefault()
 
@@ -123,7 +121,6 @@ btnAddNewUser.addEventListener("click", async e => {
     })
 })
 
-//Delete request
 btnDeleteForm.addEventListener("click", async e => {
     e.preventDefault()
     const id = deleteModalForm.id.value
@@ -137,7 +134,6 @@ btnDeleteForm.addEventListener("click", async e => {
     })
 })
 
-//Patch request
 btnEditForm.addEventListener("click", async e => {
     e.preventDefault()
 
